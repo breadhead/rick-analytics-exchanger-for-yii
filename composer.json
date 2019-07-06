@@ -1,0 +1,29 @@
+{
+    "name": "breadhead/rick-analytics-exchanger",
+    "description": "",
+    "version": "0.1.0",
+    "keywords"  : [
+        "yii2",
+        "rick.ai",
+        "ecommerce",
+        "api",
+        "php"
+    ],
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.2",
+        "yiisoft/yii2": "~2.0.5",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": { "breadhead\\rickAnalytics\\": "src/" }
+    },
+    "homepage": "https://github.com/breadhead/rick-analytics-exchanger.git",
+    "authors": [
+       {
+           "name": "Kate Bogdanova",
+           "email": "katya@breadhead.ru"
+       }
+   ],
+    "minimum-stability": "stable"
+}
