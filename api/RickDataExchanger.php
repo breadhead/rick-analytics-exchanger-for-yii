@@ -1,9 +1,9 @@
 <?php
 namespace breadhead\rickAnalytics\api;
 
-use app\components\analytics\entities\Deal;
-use app\components\analytics\entities\Item;
-use app\components\analytics\entities\User;
+use breadhead\rickAnalytics\api\entities\Deal;
+use breadhead\rickAnalytics\api\entities\Item;
+use breadhead\rickAnalytics\api\entities\User;
 
 class RickDataExchanger
 {

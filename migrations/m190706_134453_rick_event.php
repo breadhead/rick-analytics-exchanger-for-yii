@@ -9,10 +9,17 @@ class m190706_134453_rick_event extends Migration
             'id' => $this->primaryKey(),
             'event' => $this->string(),
             'data' => $this->text(),
+            'client_id' => $this->string(),
+            'deal_id' => $this->string(),
             'status' => $this->smallInteger(2),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
+
+        $this->createIndex('idx-rick_event-event', '{{%rick_event}}', 'event');
+        $this->createIndex('idx-rick_event-status', '{{%rick_event}}', 'status');
+        $this->createIndex('idx-rick_event-client_id', '{{%rick_event}}', 'client_id');
+        $this->createIndex('idx-rick_event-deal_id', '{{%rick_event}}', 'deal_id');
     }
     
     public function safeDown()

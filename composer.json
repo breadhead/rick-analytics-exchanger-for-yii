@@ -1,5 +1,5 @@
 {
-    "name": "breadhead/rick-analytics-exchanger",
+    "name": "breadhead/rick-analytics-exchanger-for-yii",
     "description": "",
     "version": "0.1.0",
     "keywords"  : [
@@ -16,9 +16,9 @@
         "guzzlehttp/guzzle": "^6.3"
     },
     "autoload": {
-        "psr-4": { "breadhead\\rickAnalytics\\": "src/" }
+        "psr-4": { "breadhead\\rickAnalytics\\": "" }
     },
-    "homepage": "https://github.com/breadhead/rick-analytics-exchanger.git",
+    "homepage": "https://github.com/breadhead/rick-analytics-exchanger-for-yii.git",
     "authors": [
        {
            "name": "Kate Bogdanova",
