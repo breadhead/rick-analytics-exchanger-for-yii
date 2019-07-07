@@ -11,6 +11,7 @@ class Event
     const STATUS_NEW = 10;
     const STATUS_IN_PROGRESS = 5;
     const STATUS_DONE = 0;
+    const STATUS_FAIL = 7;
 
     private $id;
     private $eventType;
@@ -20,6 +21,7 @@ class Event
     private $status;
     private $createdAt;
     private $updatedAt;
+    private $error;
 
     public function __construct(
         ?string $id,
@@ -29,7 +31,8 @@ class Event
         int $status,
         ?string $dealId,
         ?int $createdAt = null,
-        ?int $updatedAt = null
+        ?int $updatedAt = null,
+        ?string $error
     ) {
         $this->id = $id;
         $this->eventType = $eventType;
@@ -39,6 +42,7 @@ class Event
         $this->status = $status;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        $this->error = $error;
     }
 
     public function getId(): ?string
@@ -89,5 +93,15 @@ class Event
     public function changeUpdatedAt(int $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function changeError(string $error): void
+    {
+        $this->error = $error;
     }
 }

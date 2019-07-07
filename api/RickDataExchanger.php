@@ -85,13 +85,18 @@ class RickDataExchanger
 
     private function makeFieldsFromItem(Item $item): array
     {
-        return [
+        $fields = [
             "name" => $item->name,
             "sku" => $item->sku,
             "price" => $item->price,
-            "quantity" => $item->quantity,
-            "category" => $item->category
+            "quantity" => $item->quantity
         ];
+
+        if ($item->category) {
+            $fields['category'] = $item->category;
+        }
+
+        return $fields;
     }
 
     private function getPlatformPrefix(): string

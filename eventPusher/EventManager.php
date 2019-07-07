@@ -55,7 +55,7 @@ class EventManager
         try {
             $event->changeStatus(Event::STATUS_IN_PROGRESS);
             $this->eventRepository->update($event);
-            
+
             $data = $event->getData();
 
             switch ($event->getEventType()) {
@@ -101,6 +101,11 @@ class EventManager
             $this->eventRepository->update($event);
 
         } catch (\Exception $e) {
+            $event->changeStatus(Event::STATUS_FAIL);
+            $event->changeError($e->getMessage());
+
+            $this->eventRepository->update($event);
+
             throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
         }
 

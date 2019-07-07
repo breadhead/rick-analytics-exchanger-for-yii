@@ -25,8 +25,8 @@ class Deal
         iterable $items
     )
     {
-        if (in_array($status, self::ACCEPTABLE_STATUSES)) {
-            throw new \InvalidArgumentException(sprintf('Unknown status %s was given', $status));
+        if (!in_array($status, self::ACCEPTABLE_STATUSES)) {
+            throw new \InvalidArgumentException(sprintf('Unknown status "%s" was given', $status));
         }
 
         $this->orderId = $orderId;

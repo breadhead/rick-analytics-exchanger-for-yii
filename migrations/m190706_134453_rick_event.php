@@ -12,6 +12,7 @@ class m190706_134453_rick_event extends Migration
             'client_id' => $this->string(),
             'deal_id' => $this->string(),
             'status' => $this->smallInteger(2),
+            'error' => $this->text(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
