@@ -187,4 +187,27 @@ class eventManager
 
         $this->eventRepository->insert($event);
     }
+
+    public function addDealCheckEvent(iterable $deals)
+    {
+        $deals = (function (Deal ...$deals) {
+            return $deals;
+        }) (...$deals);
+
+        $dealsData = [];
+        array_map(
+            function($deal) use(&$dealsData) {},
+            $deals
+        );
+        $event = new Event(
+            null,
+            Event::TYPE_CHECK,
+            $dealsData,
+            'check_event',
+            null,
+            Event::STATUS_NEW
+        );
+
+        $this->eventRepository->insert($event);
+    }
 }
