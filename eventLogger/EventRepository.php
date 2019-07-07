@@ -2,6 +2,7 @@
 namespace breadhead\rickAnalytics\eventLogger;
 
 
+use breadhead\rickAnalytics\models\RickEventModel;
 use yii\db\ActiveRecord;
 
 class EventRepository implements EventRepositoryInterface
@@ -26,7 +27,7 @@ class EventRepository implements EventRepositoryInterface
             $model,
             [
                 'event_type' => $event->getEventType(),
-                'data' => $event->getData(),
+                'data' => json_encode($event->getData()),
                 'status' => $event->getStatus(),
                 'client_id' => $event->getClientId(),
                 'deal_id' => $event->getDealId(),
@@ -41,7 +42,7 @@ class EventRepository implements EventRepositoryInterface
         }
 
         /** @var ActiveRecord $model */
-        $model = $this->modelClass->findOne($event->getId());
+        $model = $this->modelClass::findOne($event->getId());
 
         if (!$model) {
             throw new EventRepositoryException(sprintf('Model with such id %s was not found', $event->getId()));
@@ -51,7 +52,7 @@ class EventRepository implements EventRepositoryInterface
             $model,
             [
                 'event_type' => $event->getEventType(),
-                'data' => $event->getData(),
+                'data' => json_encode($event->getData()),
                 'status' => $event->getStatus(),
                 'client_id' => $event->getClientId(),
                 'deal_id' => $event->getDealId(),
@@ -66,7 +67,7 @@ class EventRepository implements EventRepositoryInterface
         $res = $model->save();
 
         if (!$res) {
-            throw new EventRepositoryException(json_decode($model->getErrors()));
+            throw new EventRepositoryException(json_encode($model->getErrors()));
         }
 
         return $model->id;
@@ -74,7 +75,7 @@ class EventRepository implements EventRepositoryInterface
 
     public function find(array $filter, int $limit = 5): ?array
     {
-        $models = $this->modelClass->find()
+        $models = $this->modelClass::find()
             ->where($filter)
             ->limit($limit)
             ->orderBy(['id' => SORT_ASC])
@@ -91,12 +92,14 @@ class EventRepository implements EventRepositoryInterface
             },
             $models
         );
+
+        return $result;
     }
 
     public function findOne(array $filter): ?Event
     {
         /** @var ActiveRecord $model */
-        $model = $this->modelClass->find()
+        $model = $this->modelClass::find()
             ->where($filter)
             ->one();
 
@@ -114,8 +117,8 @@ class EventRepository implements EventRepositoryInterface
             $model->event_type,
             json_decode($model->data, true),
             $model->client_id,
-            $model->deal_id,
             $model->status,
+            $model->deal_id,
             $model->created_at,
             $model->updated_at
         );

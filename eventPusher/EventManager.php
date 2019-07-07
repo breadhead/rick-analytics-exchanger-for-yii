@@ -7,8 +7,9 @@ use breadhead\rickAnalytics\api\entities\User;
 use breadhead\rickAnalytics\api\RickDataExchanger;
 use breadhead\rickAnalytics\eventLogger\Event;
 use breadhead\rickAnalytics\eventLogger\EventRepository;
+use breadhead\rickAnalytics\eventLogger\EventRepositoryException;
 
-class eventManager
+class EventManager
 {
     private $rickDataExchanger;
     private $eventRepository;
@@ -22,22 +23,26 @@ class eventManager
 
     public function executeEvents()
     {
-        $this->defineJobs();
+        try {
+            $this->defineJobs();
 
-        array_map(
-            function($event) {
-                $this->doJob($event);
-            },
-            $this->jobs
-        );
+            array_map(
+                function ($event) {
+                    $this->doJob($event);
+                },
+                $this->jobs
+            );
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    private function defineJobs(): array
+    private function defineJobs(): void
     {
         $inProgress = $this->eventRepository->find(['status' => Event::STATUS_IN_PROGRESS], 1);
 
         if (!empty($inProgress)) {
-            return false;
+            exit;
         }
 
         $jobs = $this->eventRepository->find(['status' => Event::STATUS_NEW], 10);
@@ -49,13 +54,14 @@ class eventManager
     {
         try {
             $event->changeStatus(Event::STATUS_IN_PROGRESS);
-
+            $this->eventRepository->update($event);
+            
             $data = $event->getData();
 
             switch ($event->getEventType()) {
                 case Event::TYPE_REGISTER:
                     /** @var RickDataExchanger $r*/
-                    $rickUser = new User($data['user_id'], $data['client_id'], $data['created_at']);
+                    $rickUser = new User($data['user_id'], $data['client_id'], $data['timestamp']);
 
                     $this->rickDataExchanger->createUser($rickUser);
 
@@ -92,9 +98,10 @@ class eventManager
             }
 
             $event->changeStatus(Event::STATUS_DONE);
+            $this->eventRepository->update($event);
 
         } catch (\Exception $e) {
-            throw $e;
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
         }
 
         return true;
@@ -137,77 +144,98 @@ class eventManager
 
     public function addDealCreateEvent(Deal $deal): void
     {
-        $event = new Event(
-            null,
-            Event::TYPE_CREATE,
-            $deal->getAsArray(),
-            $deal->clientId,
-            $deal->orderId,
-            Event::STATUS_NEW
-        );
+        try {
+            $event = new Event(
+                null,
+                Event::TYPE_CREATE,
+                $deal->getAsArray(),
+                $deal->clientId,
+                Event::STATUS_NEW,
+                $deal->orderId
+            );
 
-        $this->eventRepository->insert($event);
+            $this->eventRepository->insert($event);
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function addDealUpdateEvent(Deal $deal): void
     {
-        $event = new Event(
-            null,
-            Event::TYPE_UPDATE,
-            $deal->getAsArray(),
-            $deal->clientId,
-            $deal->orderId,
-            Event::STATUS_NEW
-        );
+        try {
+            $event = new Event(
+                null,
+                Event::TYPE_UPDATE,
+                $deal->getAsArray(),
+                $deal->clientId,
+                Event::STATUS_NEW,
+                $deal->orderId
+            );
 
-        $this->eventRepository->insert($event);
+            $this->eventRepository->insert($event);
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function addDealCreteOrUpdateEvent(Deal $deal): void
     {
-        $event = $this->eventRepository->findOne(['deal_id' => $deal->orderId, 'event_type' => Event::TYPE_CREATE]);
+        try {
+            $event = $this->eventRepository->findOne(['deal_id' => $deal->orderId, 'event_type' => Event::TYPE_CREATE]);
 
-        if ($event) {
-            $this->addDealUpdateEvent($deal);
-        } else {
-            $this->addDealCreateEvent($deal);
+            if ($event) {
+                $this->addDealUpdateEvent($deal);
+            } else {
+                $this->addDealCreateEvent($deal);
+            }
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
     public function addUserRegisterEvent(User $user): void
     {
-        $event = new Event(
-            null,
-            Event::TYPE_REGISTER,
-            $user->getAsArray(),
-            $user->clientId,
-            null,
-            Event::STATUS_NEW
-        );
+        try {
+            $event = new Event(
+                null,
+                Event::TYPE_REGISTER,
+                $user->getAsArray(),
+                $user->clientId,
+                Event::STATUS_NEW,
+                null
+            );
 
-        $this->eventRepository->insert($event);
+            $this->eventRepository->insert($event);
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function addDealCheckEvent(iterable $deals)
     {
-        $deals = (function (Deal ...$deals) {
-            return $deals;
-        }) (...$deals);
+        try {
+            $deals = (function (Deal ...$deals) {
+                return $deals;
+            }) (...$deals);
 
-        $dealsData = [];
-        array_map(
-            function($deal) use(&$dealsData) {},
-            $deals
-        );
-        $event = new Event(
-            null,
-            Event::TYPE_CHECK,
-            $dealsData,
-            'check_event',
-            null,
-            Event::STATUS_NEW
-        );
+            $dealsData = [];
+            array_map(
+                function ($deal) use (&$dealsData) {
+                },
+                $deals
+            );
+            $event = new Event(
+                null,
+                Event::TYPE_CHECK,
+                $dealsData,
+                'check_event',
+                Event::STATUS_NEW,
+                null
+            );
 
-        $this->eventRepository->insert($event);
+            $this->eventRepository->insert($event);
+        } catch (EventRepositoryException $e) {
+            throw new EventManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

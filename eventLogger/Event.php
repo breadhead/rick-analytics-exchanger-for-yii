@@ -26,10 +26,10 @@ class Event
         string $eventType,
         array $data,
         string $clientId,
-        ?string $dealId,
         int $status,
-        ?int $createdAt,
-        ?int $updatedAt
+        ?string $dealId,
+        ?int $createdAt = null,
+        ?int $updatedAt = null
     ) {
         $this->id = $id;
         $this->eventType = $eventType;

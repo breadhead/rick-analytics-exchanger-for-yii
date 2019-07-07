@@ -3,4 +3,4 @@ Send events to Rick.Exchange
 
 do  migrations:
 
-php yii migrate --migrationPath=@vendor/breadhead/rick-analytics-exchanger/migrations/
+php yii migrate --migrationPath=@vendor/breadhead/rick-analytics-exchanger-for-yii/migrations/

@@ -31,6 +31,14 @@ class RickEventModel extends ActiveRecord
         ];
     }
 
+    public function rules()
+    {
+        return [
+            [['event_type', 'data', 'client_id', 'deal_id'], 'string'],
+            [['id', 'status', 'created_at', 'updated_at'], 'integer']
+        ];
+    }
+
     public function attributeLabels()
     {
         return [
