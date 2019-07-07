@@ -72,10 +72,12 @@ class EventRepository implements EventRepositoryInterface
         return $model->id;
     }
 
-    public function find(array $filter): ?array
+    public function find(array $filter, int $limit = 5): ?array
     {
         $models = $this->modelClass->find()
             ->where($filter)
+            ->limit($limit)
+            ->orderBy(['id' => SORT_ASC])
             ->all();
 
         if (empty($models)) {
@@ -110,7 +112,7 @@ class EventRepository implements EventRepositoryInterface
         return new Event(
             $model->id,
             $model->event_type,
-            $model->data,
+            json_decode($model->data, true),
             $model->client_id,
             $model->deal_id,
             $model->status,

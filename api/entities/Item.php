@@ -23,4 +23,15 @@ class Item
         $this->quantity = $quantity;
         $this->category = $category;
     }
+
+    public function getAsArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'sku' => $this->sku,
+            'price' => $this->price,
+            'quantity' => $this->quantity,
+            'category' => $this->category
+        ];
+    }
 }

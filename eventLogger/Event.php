@@ -8,6 +8,10 @@ class Event
     const TYPE_REGISTER = 'lead';
     const TYPE_CHECK = 'check';
 
+    const STATUS_NEW = 10;
+    const STATUS_IN_PROGRESS = 5;
+    const STATUS_DONE = 0;
+
     private $id;
     private $eventType;
     private $data;
@@ -22,7 +26,7 @@ class Event
         string $eventType,
         array $data,
         string $clientId,
-        string $dealId,
+        ?string $dealId,
         int $status,
         ?int $createdAt,
         ?int $updatedAt
@@ -57,7 +61,7 @@ class Event
         return $this->clientId;
     }
 
-    public function getDealId(): string
+    public function getDealId(): ?string
     {
         return $this->dealId;
     }

@@ -41,5 +41,31 @@ class Deal
             return $items;
         }) (...$items);
     }
+
+    public function getAsArray(): array
+    {
+        $data = [
+            'order_id' => $this->orderId,
+            'user_id' => $this->userId,
+            'client_id' => $this->clientId,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+            'status' => $this->status,
+            'revenue' => $this->revenue,
+        ];
+
+        $items = [];
+        array_map(
+            function($item) use (&$items) {
+                /** @var Item $item */
+                $items[] = $item->getAsArray();
+            },
+            $this->items
+        );
+
+        $data['items'] = $items;
+
+        return $data;
+    }
 }
 

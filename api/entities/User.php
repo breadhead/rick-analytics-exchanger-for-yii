@@ -13,4 +13,13 @@ class User
         $this->clientId = $clientId;
         $this->timestamp = $timestamp;
     }
+
+    public function getAsArray(): array
+    {
+        return [
+            'user_id' => $this->userId,
+            'client_id' => $this->clientId,
+            'timestamp' => $this->timestamp
+        ];
+    }
 }

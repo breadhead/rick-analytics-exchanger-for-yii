@@ -19,10 +19,6 @@ use yii\db\ActiveRecord;
  */
 class RickEventModel extends ActiveRecord
 {
-    const NEW = 10;
-    const IN_PROGRESS = 5;
-    const DONE = 0;
-
     public static function tableName()
     {
         return 'rick_event';
