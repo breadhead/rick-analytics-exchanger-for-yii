@@ -156,7 +156,10 @@ class EventManager
                 $deal->getAsArray(),
                 $deal->clientId,
                 Event::STATUS_NEW,
-                $deal->orderId
+                $deal->orderId,
+                null,
+                null,
+                null
             );
 
             $this->eventRepository->insert($event);
@@ -174,7 +177,10 @@ class EventManager
                 $deal->getAsArray(),
                 $deal->clientId,
                 Event::STATUS_NEW,
-                $deal->orderId
+                $deal->orderId,
+                null,
+                null,
+                null
             );
 
             $this->eventRepository->insert($event);
@@ -207,6 +213,9 @@ class EventManager
                 $user->getAsArray(),
                 $user->clientId,
                 Event::STATUS_NEW,
+                null,
+                null,
+                null,
                 null
             );
 
@@ -229,12 +238,16 @@ class EventManager
                 },
                 $deals
             );
+
             $event = new Event(
                 null,
                 Event::TYPE_CHECK,
                 $dealsData,
                 'check_event',
                 Event::STATUS_NEW,
+                null,
+                null,
+                null,
                 null
             );
 

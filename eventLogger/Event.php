@@ -30,8 +30,8 @@ class Event
         string $clientId,
         int $status,
         ?string $dealId,
-        ?int $createdAt = null,
-        ?int $updatedAt = null,
+        ?int $createdAt,
+        ?int $updatedAt,
         ?string $error
     ) {
         $this->id = $id;
