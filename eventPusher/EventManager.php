@@ -125,8 +125,8 @@ class EventManager
 
     private function compileDeal(array $data): Deal
     {
+        $items = [];
         if (isset($data['items']) && !empty($data['items'])) {
-            $items = [];
             array_map(
                 function($item) use (&$items) {
                     $items[] = $this->compileItem($item);

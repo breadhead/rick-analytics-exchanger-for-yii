@@ -1,8 +1,6 @@
 <?php
 namespace breadhead\rickAnalytics\eventLogger;
 
-
-use breadhead\rickAnalytics\models\RickEventModel;
 use yii\db\ActiveRecord;
 
 class EventRepository implements EventRepositoryInterface
@@ -31,6 +29,7 @@ class EventRepository implements EventRepositoryInterface
                 'status' => $event->getStatus(),
                 'client_id' => $event->getClientId(),
                 'deal_id' => $event->getDealId(),
+                'error' => $event->getError()
             ]
         );
     }
@@ -56,6 +55,7 @@ class EventRepository implements EventRepositoryInterface
                 'status' => $event->getStatus(),
                 'client_id' => $event->getClientId(),
                 'deal_id' => $event->getDealId(),
+                'error' => $event->getError()
             ]
         );
     }
@@ -120,7 +120,8 @@ class EventRepository implements EventRepositoryInterface
             $model->status,
             $model->deal_id,
             $model->created_at,
-            $model->updated_at
+            $model->updated_at,
+            $model->error
         );
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 use yii\db\Migration;
 
 class m190706_134453_rick_event extends Migration
