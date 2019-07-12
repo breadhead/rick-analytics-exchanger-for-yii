@@ -86,7 +86,7 @@ class EventManager
                         function($deal) use(&$deals) {
                             $deals[] = $this->compileDeal($deal);
                         },
-                        $data
+                        $data['deals']
                     );
 
                     $this->rickDataExchanger->checkDeals($deals);
@@ -231,6 +231,15 @@ class EventManager
             $deals = (function (Deal ...$deals) {
                 return $deals;
             }) (...$deals);
+
+            $data = [];
+            array_map(
+                function($deal) use(&$data) {
+                    /** @var Deal $deal */
+                    $data[] = $deal->getAsArray();
+                },
+                $deals
+            );
 
             $event = new Event(
                 null,
