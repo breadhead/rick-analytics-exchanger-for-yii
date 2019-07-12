@@ -86,7 +86,7 @@ class EventManager
                         function($deal) use(&$deals) {
                             $deals[] = $this->compileDeal($deal);
                         },
-                        $data['deals']
+                        $data
                     );
 
                     $this->rickDataExchanger->checkDeals($deals);
@@ -244,7 +244,7 @@ class EventManager
             $event = new Event(
                 null,
                 Event::TYPE_CHECK,
-                $deals,
+                $data,
                 'check_event',
                 Event::STATUS_NEW,
                 null,
