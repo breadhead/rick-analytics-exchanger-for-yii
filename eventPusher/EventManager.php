@@ -232,17 +232,10 @@ class EventManager
                 return $deals;
             }) (...$deals);
 
-            $dealsData = [];
-            array_map(
-                function ($deal) use (&$dealsData) {
-                },
-                $deals
-            );
-
             $event = new Event(
                 null,
                 Event::TYPE_CHECK,
-                $dealsData,
+                $deals,
                 'check_event',
                 Event::STATUS_NEW,
                 null,
