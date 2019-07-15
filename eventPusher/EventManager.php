@@ -47,7 +47,7 @@ class EventManager
 
         $jobs = $this->eventRepository->find(['status' => Event::STATUS_NEW], 10);
 
-        $this->jobs = $jobs;
+        $this->jobs = $jobs == null ? [] : $jobs;
     }
 
     private function doJob(Event $event): bool
