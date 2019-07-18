@@ -14,11 +14,15 @@ class EventManager
     private $rickDataExchanger;
     private $eventRepository;
     private $jobs = [];
+    private $jobsLimit = 100;
 
-    public function __construct(RickDataExchanger $rickDataExchanger, EventRepository $eventRepository)
+    public function __construct(RickDataExchanger $rickDataExchanger, EventRepository $eventRepository, ?int $jobsLimit = 100)
     {
         $this->rickDataExchanger = $rickDataExchanger;
         $this->eventRepository = $eventRepository;
+        if ($jobsLimit) {
+            $this->jobsLimit = $jobsLimit;
+        }
     }
 
     public function executeEvents()
@@ -45,7 +49,7 @@ class EventManager
             exit;
         }
 
-        $jobs = $this->eventRepository->find(['status' => Event::STATUS_NEW], 10);
+        $jobs = $this->eventRepository->find(['status' => Event::STATUS_NEW], $this->jobsLimit);
 
         $this->jobs = $jobs == null ? [] : $jobs;
     }
