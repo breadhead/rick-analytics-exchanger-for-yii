@@ -12,7 +12,7 @@ class Deal
     public $revenue;
     public $items;
 
-    const ACCEPTABLE_STATUSES = ['created', 'payed', 'canceled'];
+    const ACCEPTABLE_STATUSES = ['created', 'payed', 'canceled', 'free'];
 
     public function __construct(
         string $orderId,
